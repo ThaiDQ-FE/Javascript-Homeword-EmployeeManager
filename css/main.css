@@ -1,22 +1,66 @@
 .sp-thongbao {
   color: red;
-  margin-left: 2px; 
+  margin-left: 2px;
   display: none;
 }
 
-#SapXepGiam{
-	display: none;
+.border-input {
+  border-color: red;
+}
+.show-error {
+  position: absolute;
+  top: -25px;
+  right: 50%;
+  background-color: red;
+  color: white;
+  border-radius: 5px;
+  padding: 5px 10px;
+  width: 350px;
 }
 
-#content{
-	width: 100%;
-	background: #74ebd5;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #ACB6E5, #74ebd5);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #ACB6E5, #74ebd5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+.fa-exclamation-triangle {
+  display: none;
+  color: red;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 3%;
+}
+.show-icon-date {
+  right: 10%;
+}
+.show-icon-date:hover .show-error {
+  display: inline-block;
+}
+.show-icon,
+.show-icon-date {
+  display: inline-block;
 }
 
+.show-icon:hover .show-error {
+  display: inline-block;
+}
 
-.myCardHeader, .myCardFooter{
-	background-color: transparent;       
+#SapXepGiam {
+  display: none;
+}
+
+#content {
+  width: 100%;
+  background: #74ebd5; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #acb6e5,
+    #74ebd5
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #acb6e5,
+    #74ebd5
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.myCardHeader,
+.myCardFooter {
+  background-color: transparent;
 }
