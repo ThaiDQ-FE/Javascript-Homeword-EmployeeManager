@@ -6,55 +6,29 @@ function getEle(id) {
     return document.getElementById(id);
 }
 
+var dataBase;
+
 getListEmployee();
 
 function getListEmployee() {
     var promise = employeeService.getList();
     promise.then(function (result) {
+        dataBase = result.data;
         show(result.data);
     }).catch(function (error) {
         console.log(error);
     })
 }
 
-
-function checkMap(mapX, inputValue) {
-    var tbody = getEle('tableDanhSach');
-    var content = '';
-    mapX.map(function (item) {
-        if(inputValue.trim() === item.loaiNV){
-            content += `
-            <tr>
-                <td>${item.taiKhoan}</td>
-                <td>${item.hoTen}</td>
-                <td>${item.email}</td>
-                <td>${item.ngayLam}</td>
-                <td>${item.chucVu}</td>
-                <td>${item.tongLuong}</td>
-                <td>${item.loaiNV}</td>
-                <td>
-                    <button style="mar-right:5px" class="btn btn-danger" onclick="deleteEmployee('${item.id}')"><i class="fa fa-trash"></i></button>
-                    <button class="btn btn-info" onclick="updateEmployee('${item.id}')" data-toggle="modal"
-                    data-target="#myModal"
-                    ><i class="fa fa-paint-brush"></i></button>
-                </td>
-            </tr>
-        `;
-        }else if(inputValue === ''){
-            getListEmployee();
-        }
+function filterByRank(typeOfRank) {
+    return dataBase.filter(function (employee) {
+        return typeOfRank === employee.loaiNV;
     })
-    tbody.innerHTML = content;
 }
 
-getEle('searchName').onkeypress = function () {
+getEle('searchName').onkeyup = function () {
     var chuoiTK = getEle('searchName').value;
-    var promise = employeeService.getList();
-    promise.then(function (result) {
-        checkMap(result.data,chuoiTK);
-    }).catch(function (error) {
-        console.log(error);
-    })
+    show(filterByRank(chuoiTK));
 }
 
 
@@ -84,6 +58,7 @@ function show(employeeList) {
 }
 
 function getButton() {
+    reset()
     var modalFooter = document.querySelector("#myModal .modal-footer");
     modalFooter.innerHTML = `
         <button id="btn-add" class="btn btn-success" onclick="addEmployee()">Thêm</button>
@@ -99,7 +74,6 @@ function getButton() {
 }
 
 function addEmployee() {
-    
 
     var taiKhoan = getEle('tknv').value;
     var hoTen = getEle('name').value;
@@ -131,10 +105,9 @@ function addEmployee() {
 
     if(isValid){
         var employee = new Employee(taiKhoan,hoTen,matKhau,email,ngayLam,luongCB,chucVu,gioLam);
-        calSal(chucVu,employee,luongCB);
-        classify(gioLam,employee);
+        employee.calSalary();
         console.log(employee);
-        console.log(luongCB.length);
+        employee.calRank();
 
         employeeService.addEmployee(employee).then(function (result) {
             console.log(result);
@@ -221,10 +194,10 @@ function update(id) {
 
     if(isValid){
         var employee = new Employee(taiKhoan,hoTen,matKhau,email,ngayLam,luongCB,chucVu,gioLam);
-        calSal(chucVu,employee,luongCB);
-        classify(gioLam,employee);
+        employee.calSalary();
         console.log(employee);
-        console.log(luongCB.length);
+        employee.calRank();
+        console.log(employee);
 
         employeeService.updateEmployee(employee,id).then(function (result) {
             console.log(result);
@@ -234,28 +207,5 @@ function update(id) {
         })
         reset();
         getEle('btn-update').setAttribute("data-dismiss","modal");
-    }
-}
-
-
-function classify(glv,emp) {
-    if(glv >= 192){
-        emp.classification('Xuất sắc');
-    }else if(glv >= 176){
-        emp.classification('Giỏi');
-    }else if(glv >= 160){
-        emp.classification('Khá');
-    }else{
-        emp.classification('Trung bình');
-    }
-}
-
-function calSal(cv,emp,lcb) {
-    if(cv === 'Sếp'){
-        emp.calSalary(lcb,3);
-    }else if(cv === 'Trưởng phòng'){
-        emp.calSalary(lcb,2);
-    }else if (cv === 'Nhân viên'){
-        emp.calSalary(lcb,1);
     }
 }

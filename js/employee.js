@@ -7,15 +7,27 @@ function Employee(_taiKhoan,_hoTen,_matKhau,_email,_ngayLam,_luongCB,_chucVu,_gi
     this.luongCB = _luongCB;
     this.chucVu = _chucVu;
     this.gioLam = _gioLam;
-    this.tongLuong = 0;
-    this.loaiNV = '';
+    this.tongLuong = _luongCB;
+    this.loaiNV = 'Xuất Sắc';
 
-    this.calSalary = function (luongCB,number) {
-        this.tongLuong = luongCB * number;
+    this.calSalary = function () {
+        switch (this.chucVu) {
+            case "Sếp":
+                this.tongLuong = this.luongCB *3;
+                break;
+            case "Trưởng phòng":
+                this.tongLuong = this.luongCB *2;
+                break
+            case "Nhân viên":
+                this.tongLuong = this.luongCB;
+                break;
+        }
     }
 
-    this.classification = function (content) {
-        this.loaiNV = content;
+    this.calRank = function () {
+        if(this.gioLam < 160) this.loaiNV = 'Trung Bình';
+        else if(this.gioLam < 176) this.loaiNV = 'Khá';
+        else if(this.gioLam < 192) this.loaiNV = 'Giỏi';
     }
 
 }
